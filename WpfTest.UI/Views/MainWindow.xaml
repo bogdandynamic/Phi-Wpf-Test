@@ -1,0 +1,55 @@
+﻿<Window x:Class="WpfTest.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1024">
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="UrlButtonStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Image Source="../Resources/web.png" Width="32" Height="32" Cursor="Hand" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Content="Refresh" Command="{Binding RefreshCommand}"></Button>
+        <DataGrid Grid.Row="1" 
+                  ItemsSource="{Binding BestStories}" 
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserResizeColumns="False"
+                  CanUserSortColumns="True"
+                  IsReadOnly="True"
+                  AlternatingRowBackground="DarkGray"
+                  AlternationCount="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Title}" Header="Title" Width="SizeToCells" MinWidth="400"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=PostedBy}" Header="Posted by" Width="SizeToCells" MinWidth="100"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Score}" Header="Score" Width="SizeToCells" MinWidth="80"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=DateTime}" Header="DateTime" Width="SizeToCells" MinWidth="80"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="URL">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource UrlButtonStyle}" Command="{Binding Path=DataContext.OpenUrlCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding Path=Url}"></Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>
